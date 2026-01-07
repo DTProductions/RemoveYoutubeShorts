@@ -1,0 +1,25 @@
+/* Short recommendations in main page */
+[is-shorts]{
+    display: none !important;
+}
+
+/* Shorts in channels' "Shorts" tab */
+[is-shorts-grid]{
+    display: none !important;
+}
+
+/* Short recommendations in normal videos */
+ytd-reel-shelf-renderer {
+    display: none !important;
+}
+grid-shelf-view-model{
+    display: none !important;
+}
+
+/* Main Page Short buttons */
+a[href="/shorts/"] {
+    display: none !important;
+}
+a#endpoint[title="Shorts"]{
+    display: none !important;
+}

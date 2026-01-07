@@ -1,0 +1,30 @@
+
+{
+  "manifest_version": 3,
+  "name": "Remove Youtube Shorts",
+  "description": "Remove Youtube Shorts from your browser",
+  "version": "1.0",
+  "icons": {
+    "64": "images/icon64.png",
+    "128": "images/icon128.png"
+  },
+  "action": {
+    "default_icon": "images/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "shorts_tab.js",
+        "search_tab.js",
+        "cleaner.js"
+      ],
+      "css":[
+        "css/shorts.css"
+      ],
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}

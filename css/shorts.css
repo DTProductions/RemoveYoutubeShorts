@@ -8,6 +8,11 @@
     display: none !important;
 }
 
+/* Shorts in single channel's main tab*/
+ytm-shorts-lockup-view-model-v2{
+    display: none !important;
+}
+
 /* Short recommendations in normal videos */
 ytd-reel-shelf-renderer {
     display: none !important;

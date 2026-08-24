@@ -3,6 +3,10 @@
     display: none !important;
 }
 
+ytd-rich-item-renderer[rich-grid-hover-highlight]{
+    display: none !important;
+}
+
 /* Shorts in channels' "Shorts" tab */
 [is-shorts-grid]{
     display: none !important;

@@ -2,6 +2,7 @@
 // with the first call navigating to the initially loaded URL.
 // This flag is used to ensure that the initial URL is ignored.
 let navigatedOnce = false;
+const searchObserver = new SearchTabObserver();
 
 window.navigation.addEventListener("navigate", (event) => {
     if(!navigatedOnce){
@@ -16,9 +17,9 @@ window.navigation.addEventListener("navigate", (event) => {
     const url = new URL(event.destination.url);
 
     if(url.pathname === "/results"){
-        startObservingSearch();
+        searchObserver.start();
     } else{
-        stopObservingSearch();
+        searchObserver.stop();
     }
 
     if(url.pathname.startsWith("/shorts")){
@@ -30,8 +31,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if(window.location.href.startsWith("https://www.youtube.com/shorts")){
         redirectToMainPage();
     } else if(window.location.href.startsWith("https://www.youtube.com/results")){
-        startObservingSearch();
+        searchObserver.start();
     } else {
-        stopObservingSearch();
+        searchObserver.stop();
     }
 });

@@ -1,46 +1,64 @@
-let searchObserver;
-let nonShortsNodeSet;
+class SearchTabObserver{
+    #observer;
+    #nonShortsNodeSet;
+    #isActive = false;
 
-function startObservingSearch(){
-    nonShortsNodeSet = new Set();
-    searchObserver = new MutationObserver(mutations => {
-        mutations.forEach((mutation)=>{
-            const renderers = document.querySelectorAll("ytd-video-renderer");
-            renderers.forEach((renderer) => {
-                if(!nonShortsNodeSet.has(renderer) && isShort(renderer)){
-                    nonShortsNodeSet.add(renderer);
-                    renderer.remove();
-                }
+    constructor(){
+        this.#nonShortsNodeSet = new Set();
+        this.#observer = new MutationObserver(mutations => {
+            mutations.forEach((mutation)=> {
+                const renderers = document.querySelectorAll("ytd-video-renderer");
+                renderers.forEach((renderer) => {
+                    if(!this.#isActive){
+                        return;
+                    }
+                    if(this.#nonShortsNodeSet.has(renderer)){
+                        return;
+                    }
+
+                    if(this.#isShort(renderer)){
+                        renderer.remove();
+                    } else {
+                        this.#nonShortsNodeSet.add(renderer);
+                    }
+                });
             });
         });
-    });
+    }
 
-    searchObserver.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-}
-
-function isShort(element){
-    const links = element.querySelectorAll("a");
-    for(let i = 0; i < links.length; i++){
-        const url = links[i].href;
-        const isShort = url.startsWith("https://www.youtube.com/shorts/");
-        if(isShort){
-            return true;
+    #isShort(element){
+        const links = element.querySelectorAll("a");
+        for(let i = 0; i < links.length; i++){
+            const url = links[i].href;
+            const isShort = url.startsWith("https://www.youtube.com/shorts/");
+            if(isShort){
+                return true;
+            }
         }
+
+        return false;
     }
 
-    return false;
-}
+    start(){
+        if(this.#isActive){
+            return;
+        }
 
-function stopObservingSearch(){
-    if(searchObserver != null){
-        searchObserver.disconnect();
-        searchObserver = null;
+        this.#observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+
+        this.#isActive = true;
     }
 
-    if(nonShortsNodeSet != null){
-        nonShortsNodeSet = null;
+    stop(){
+        if(this.#observer !== null){
+            this.#observer.takeRecords();
+            this.#observer.disconnect();
+        }
+
+        this.#nonShortsNodeSet.clear();
+        this.#isActive = false;
     }
 }
